@@ -1,9 +1,9 @@
-# Eloquent Filterable
+# Eloquent Filters
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/emargareten/eloquent-filterable.svg?style=flat-square)](https://packagist.org/packages/emargareten/eloquent-filterable)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/emargareten/eloquent-filters.svg?style=flat-square)](https://packagist.org/packages/emargareten/eloquent-filters)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-![Tests](https://github.com/emargareten/eloquent-filterable/workflows/Tests/badge.svg)
-[![Total Downloads](https://img.shields.io/packagist/dt/emargareten/eloquent-filterable.svg?style=flat-square)](https://packagist.org/packages/emargareten/eloquent-filterable)
+[![Tests](https://github.com/emargareten/eloquent-filters/actions/workflows/tests.yml/badge.svg)](https://github.com/emargareten/eloquent-filters/actions/workflows/tests.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/emargareten/eloquent-filters.svg?style=flat-square)](https://packagist.org/packages/emargareten/eloquent-filters)
 
 Eloquent Filterable is a package that helps you filter Laravel Eloquent models using arrays. With this package, you can easily filter Eloquent models based on different criteria and combinations of criteria.
 
@@ -15,7 +15,7 @@ This package requires PHP 8.1 or later.
 You can install the package via composer:
 
 ``` bash
-composer require emargareten/eloquent-filterable
+composer require emargareten/eloquent-filters
 ```
 
 ## Usage
