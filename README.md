@@ -150,13 +150,9 @@ The above example will return all users named John that are either younger than 
 
 ### Available Operators
 
-The following operators are available by default in all types:
-- `in` - The field value is in the filter value. (`value` should be an array)
-- `not-in` - The field value is not in the filter value. (`value` should be an array)
+#### String Operators
 - `exists` - The field value is not null. (you can omit the `value` parameter)
 - `not-exists` - The field value is null. (you can omit the `value` parameter)
-
-#### String Operators
 - `equal` - The field value is equal to the filter value.
 - `not-equal` - The field value is not equal to the filter value.
 - `starts-with` - The field value starts with the filter value.
@@ -165,8 +161,12 @@ The following operators are available by default in all types:
 - `not-ends-with` - The field value does not end with the filter value.
 - `contains` - The field value contains the filter value.
 - `not-contains` - The field value does not contain the filter value.
+- `in` - The field value is in the filter value. (`value` should be an array)
+- `not-in` - The field value is not in the filter value. (`value` should be an array)
 
 #### Number Operators
+- `exists` - The field value is not null. (you can omit the `value` parameter)
+- `not-exists` - The field value is null. (you can omit the `value` parameter)
 - `equal` - The field value is equal to the filter value.
 - `not-equal` - The field value is not equal to the filter value.
 - `greater-than` - The field value is greater than the filter value.
@@ -175,12 +175,18 @@ The following operators are available by default in all types:
 - `less-than-or-equal` - The field value is less than or equal to the filter value.
 - `between` - The field value is between the filter value. (`value` should be an array)
 - `not-between` - The field value is not between the filter value. (`value` should be an array)
+- `in` - The field value is in the filter value. (`value` should be an array)
+- `not-in` - The field value is not in the filter value. (`value` should be an array)
 
 #### Boolean Operators
+- `exists` - The field value is not null. (you can omit the `value` parameter)
+- `not-exists` - The field value is null. (you can omit the `value` parameter)
 - `equal` - The field value is equal to the filter value.
 - `not-equal` - The field value is not equal to the filter value.
 
 #### Date Operators
+- `exists` - The field value is not null. (you can omit the `value` parameter)
+- `not-exists` - The field value is null. (you can omit the `value` parameter)
 - `equal` - The field date is the same date as the filter value.
 - `not-equal` - The field date is not the same date as the filter value.
 - `greater-than` - The field date is after the filter value.
@@ -191,6 +197,8 @@ The following operators are available by default in all types:
 - `not-between` - The field date is not between the filter value dates. (`value` should be an array)
 
 #### Time Operators
+- `exists` - The field value is not null. (you can omit the `value` parameter)
+- `not-exists` - The field value is null. (you can omit the `value` parameter)
 - `equal` - The field time is the same time as the filter value.
 - `not-equal` - The field time is not the same time as the filter value.
 - `greater-than` - The field time is after the filter value.

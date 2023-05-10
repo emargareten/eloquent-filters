@@ -5,8 +5,18 @@ namespace Emargareten\EloquentFilters\Filters;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 
-class DateFilter extends BaseFilter
+class DateFilter
 {
+    public function exists(Builder $query, string $property): void
+    {
+        $query->whereNotNull($property);
+    }
+
+    public function notExists(Builder $query, string $property): void
+    {
+        $query->whereNull($property);
+    }
+
     public function equal(Builder $query, string $property, string|DateTimeInterface $value): void
     {
         $query->whereDate($property, '=', $value);

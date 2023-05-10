@@ -4,8 +4,18 @@ namespace Emargareten\EloquentFilters\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class StringFilter extends BaseFilter
+class StringFilter
 {
+    public function exists(Builder $query, string $property): void
+    {
+        $query->whereNotNull($property);
+    }
+
+    public function notExists(Builder $query, string $property): void
+    {
+        $query->whereNull($property);
+    }
+
     public function equal(Builder $query, string $property, string $value): void
     {
         $query->where($property, $value);
@@ -44,5 +54,21 @@ class StringFilter extends BaseFilter
     public function notEndsWith(Builder $query, string $property, string $value): void
     {
         $query->where($property, 'NOT LIKE', "%{$value}");
+    }
+
+    /**
+     * @param  array<int, mixed>  $values
+     */
+    public function in(Builder $query, string $property, array $values): void
+    {
+        $query->whereIn($property, $values);
+    }
+
+    /**
+     * @param  array<int, mixed>  $values
+     */
+    public function notIn(Builder $query, string $property, array $values): void
+    {
+        $query->whereNotIn($property, $values);
     }
 }
