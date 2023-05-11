@@ -148,8 +148,8 @@ User::filter([
 
 The above example will return all users named John that are either younger than 18 or older than 60.
 
-#### Filtering by relationships
-To filter a relationship you can use the dot notation to specify the relationship and the field that should be filtered.
+#### Filtering by a relationships
+To filter by a relationship you can use the dot notation to specify the relationship and the field that should be filtered.
 
 ``` php
 User::filter([
