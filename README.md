@@ -31,7 +31,7 @@ class User extends Model
 {
     use Filterable;
     
-    protected array $filterTypes = [
+    public array $filterTypes = [
         'name' => 'string',
         'email' => 'string',
         'age' => 'number',
@@ -147,6 +147,24 @@ User::filter([
 ```
 
 The above example will return all users named John that are either younger than 18 or older than 60.
+
+#### Filtering by relationships
+To filter a relationship you can use the dot notation to specify the relationship and the field that should be filtered.
+
+``` php
+User::filter([
+    [
+        'property' => 'posts.title',
+        'operator' => 'contains',
+        'value' => 'laravel',
+    ],
+])->get();
+```
+
+The above example will return all users that have a post with a title that contains the word laravel.
+
+> **Note**
+> You have to use the `Filterable` trait on the related model in order to filter by relationship.
 
 ### Available Operators
 

@@ -41,7 +41,7 @@ trait Filterable
         }
     }
 
-    protected function applyFilter(Builder $query, mixed $filter): void
+    protected function applyFilter(Builder $query, mixed $filter, string $relation = null): void
     {
         if (! isset($filter['property'])) {
             throw new FilterParameterException('Filter property is not set');
@@ -52,22 +52,28 @@ trait Filterable
         if (str_contains($property, '.')) {
             $query->whereRelation(
                 Str::before($property, '.'),
-                /** @phpstan-ignore-next-line  */
-                fn (Builder $query) => $query->filter($filter)
+                fn (Builder $query) => $this->applyFilter($query, Arr::set($filter, 'property', Str::after($property, '.')), Str::before($property, '.'))
             );
 
             return;
         }
 
-        if (! in_array($property, array_keys($this->filterTypes ?? []))) {
-            throw new FilterParameterException("Property $property is not defined in the filterTypes array");
+        if ($relation) {
+            $relationModel = $this->{$relation}()->getRelated();
+            $filterTypes = $relationModel->filterTypes ?? [];
+        } else {
+            $filterTypes = $this->filterTypes ?? [];
+        }
+
+        if (! in_array($property, array_keys($filterTypes))) {
+            throw new FilterParameterException("Property $property is not defined in the filterTypes array in model ".($relationModel ?? $this)::class);
         }
 
         $operator = $filter['operator'] ?? 'equal';
 
         $type = str_contains($operator, ':')
             ? Str::before($operator, ':')
-            : $this->filterTypes[$property] ?? 'text';
+            : $filterTypes[$property] ?? 'text';
 
         $closure = $this->getFilterClosure($type, Str::after($operator, ':'));
 

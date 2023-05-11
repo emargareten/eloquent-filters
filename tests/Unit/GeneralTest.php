@@ -1,6 +1,7 @@
 <?php
 
 use Emargareten\EloquentFilters\Exceptions\FilterParameterException;
+use Emargareten\EloquentFilters\Tests\Models\Comment;
 use Emargareten\EloquentFilters\Tests\Models\Post;
 
 test('can pass multiple filters as nested array', function () {
@@ -70,4 +71,24 @@ test('can use fqcn in filterTypes', function () {
         'operator' => 'between',
         'value' => ['2020-01-01', '2020-12-31'],
     ])->count())->toBe(1);
+});
+
+test('can apply filters on relations', function () {
+    $post = Post::create(['content' => 'Lorem ipsum dolor sit amet.']);
+    $post->comments()->create(['body' => 'Lorem ipsum dolor sit amet.']);
+
+    $post2 = Post::create(['content' => 'Ipsum dolor sit amet.']);
+    $post2->comments()->create(['body' => 'Ipsum dolor sit amet.']);
+
+    expect(Post::filter([
+        'property' => 'comments.body',
+        'operator' => 'contains',
+        'value' => 'Lorem',
+    ])->count())->toBe(1)
+        ->and(Comment::filter([
+            'property' => 'post.content',
+            'operator' => 'contains',
+            'value' => 'Lorem',
+        ])->count())
+        ->toBe(1);
 });

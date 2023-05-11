@@ -17,5 +17,12 @@ return new class() extends Migration
             $table->integer('views')->default(0);
             $table->timestamps();
         });
+
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('post_id')->constrained();
+            $table->string('body')->nullable();
+            $table->timestamps();
+        });
     }
 };
