@@ -79,6 +79,16 @@ test('number:between', function () {
     ])->count())->toBe(3);
 });
 
+test('number:between with one element in array acts like greater-than-or-equal', function () {
+    expect(Post::filter([
+        [
+            'property' => 'views',
+            'operator' => 'between',
+            'value' => [2],
+        ],
+    ])->count())->toBe(3);
+});
+
 test('number:not-between', function () {
     expect(Post::filter([
         [
@@ -87,4 +97,34 @@ test('number:not-between', function () {
             'value' => [1, 3],
         ],
     ])->count())->toBe(1);
+});
+
+test('number:not-between with one element in array acts like less-than', function () {
+    expect(Post::filter([
+        [
+            'property' => 'views',
+            'operator' => 'not-between',
+            'value' => [2],
+        ],
+    ])->count())->toBe(1);
+});
+
+test('number:in', function () {
+    expect(Post::filter([
+        [
+            'property' => 'views',
+            'operator' => 'in',
+            'value' => [1, 2],
+        ],
+    ])->count())->toBe(2);
+});
+
+test('number:not-in', function () {
+    expect(Post::filter([
+        [
+            'property' => 'views',
+            'operator' => 'not-in',
+            'value' => [1, 2],
+        ],
+    ])->count())->toBe(2);
 });

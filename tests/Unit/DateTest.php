@@ -82,6 +82,18 @@ test('date:between', function () {
     ])->count())->toBe(3);
 });
 
+test('date:between with one element in array acts like greater-than-or-equal', function () {
+    expect(Post::filter([
+        [
+            'property' => 'published_at',
+            'operator' => 'between',
+            'value' => [
+                now()->subDays(3),
+            ],
+        ],
+    ])->count())->toBe(3);
+});
+
 test('date:not-between', function () {
     expect(Post::filter([
         [
@@ -90,6 +102,18 @@ test('date:not-between', function () {
             'value' => [
                 now()->subDays(4),
                 now()->subDays(2),
+            ],
+        ],
+    ])->count())->toBe(1);
+});
+
+test('date:not-between with one element in array acts like less-than', function () {
+    expect(Post::filter([
+        [
+            'property' => 'published_at',
+            'operator' => 'not-between',
+            'value' => [
+                now()->subDays(3),
             ],
         ],
     ])->count())->toBe(1);
