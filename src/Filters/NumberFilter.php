@@ -51,7 +51,13 @@ class NumberFilter
      */
     public function between(Builder $query, string $property, iterable $values): void
     {
-        $query->whereBetween($property, $values);
+        $valuesArray = is_array($values) ? $values : iterator_to_array($values);
+
+        if (count($valuesArray) === 1) {
+            $query->where($property, '>=', $valuesArray[0]);
+        } else {
+            $query->whereBetween($property, $values);
+        }
     }
 
     /**
@@ -59,7 +65,13 @@ class NumberFilter
      */
     public function notBetween(Builder $query, string $property, iterable $values): void
     {
-        $query->whereNotBetween($property, $values);
+        $valuesArray = is_array($values) ? $values : iterator_to_array($values);
+
+        if (count($valuesArray) === 1) {
+            $query->where($property, '<', $valuesArray[0]);
+        } else {
+            $query->whereNotBetween($property, $values);
+        }
     }
 
     /**
