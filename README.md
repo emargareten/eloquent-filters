@@ -224,6 +224,78 @@ The above example will return all users that have a post with a title that conta
 - `less-than` - The field time is before the filter value.
 - `less-than-or-equal` - The field time is before or equal to the filter value.
 
+### Dynamic Custom Filters
+You can define dynamic filters by adding a method to your model prefixed with `filter` (similar to the `scope` prefix for local scopes).
+
+``` php
+use Emargareten\EloquentFilters\Filterable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    use Filterable;
+
+    /**
+     * Filter the query by posts that have at least 20 views.
+     */
+    public function filterHasTwentyViews(Builder $query): void
+    {
+        $query->where('views', '>=', 20);
+    }
+}
+```
+
+You can also define a dynamic filter that accepts a value:
+
+``` php
+/**
+ * Filter the query by posts that have at least the given amount of views.
+ */
+public function filterHasMinimumViews(Builder $query, int $minimum): void
+{
+    $query->where('views', '>=', $minimum);
+}
+```
+
+You can then use the dynamic filter in your filter array:
+
+``` php
+Post::filter([
+    [
+        'property' => 'has-twenty-views',
+    ],
+])->get();
+
+// using a value
+
+Post::filter([
+    [
+        'property' => 'has-minimum-views',
+        'value' => 20,
+    ],
+])->get();
+```
+
+Instead of defining a method on your model, you can also pass a callable as the filter property value:
+
+``` php
+Post::filter([
+    [
+        'property' => [MyClass::class, 'myMethod'],
+    ],
+])->get();
+
+// using a value
+
+Post::filter([
+    [
+        'property' => [MyClass::class, 'myMethod'],
+        'value' => 20,
+    ],
+])->get();
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information about what has changed recently.

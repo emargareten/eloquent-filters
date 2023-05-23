@@ -92,3 +92,45 @@ test('can apply filters on relations', function () {
         ])->count())
         ->toBe(1);
 });
+
+test('dynamic filter on modal', function () {
+    Post::create(['views' => 10]);
+    Post::create(['views' => 20]);
+    Post::create(['views' => 30]);
+
+    expect(Post::filter([
+        'property' => 'has-twenty-views',
+    ])->count())->toBe(2);
+});
+
+test('dynamic filter with value on modal', function () {
+    Post::create(['views' => 10]);
+    Post::create(['views' => 20]);
+    Post::create(['views' => 30]);
+
+    expect(Post::filter([
+        'property' => 'has-minimum-views',
+        'value' => 20,
+    ])->count())->toBe(2);
+});
+
+test('dynamic filter using callable', function () {
+    Post::create(['views' => 10]);
+    Post::create(['views' => 20]);
+    Post::create(['views' => 30]);
+
+    expect(Post::filter([
+        'property' => [new Post, 'filterHasTwentyViews'],
+    ])->count())->toBe(2);
+});
+
+test('dynamic filter using callable with value', function () {
+    Post::create(['views' => 10]);
+    Post::create(['views' => 20]);
+    Post::create(['views' => 30]);
+
+    expect(Post::filter([
+        'property' => [new Post, 'filterHasMinimumViews'],
+        'value' => 20,
+    ])->count())->toBe(2);
+});

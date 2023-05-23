@@ -49,6 +49,20 @@ trait Filterable
 
         $property = $filter['property'];
 
+        if (is_callable($property)) {
+            $property($query, $filter['value'] ?? null);
+
+            return;
+        }
+
+        $customFilter = 'filter'.Str::studly($property);
+
+        if (method_exists($this, $customFilter)) {
+            $this->{$customFilter}($query, $filter['value'] ?? null);
+
+            return;
+        }
+
         if (str_contains($property, '.')) {
             $query->whereRelation(
                 Str::before($property, '.'),

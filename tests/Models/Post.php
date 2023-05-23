@@ -3,6 +3,7 @@
 namespace Emargareten\EloquentFilters\Tests\Models;
 
 use Emargareten\EloquentFilters\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -27,5 +28,15 @@ class Post extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function filterHasTwentyViews(Builder $query): void
+    {
+        $query->where('views', '>=', 20);
+    }
+
+    public function filterHasMinimumViews(Builder $query, int $minimum): void
+    {
+        $query->where('views', '>=', $minimum);
     }
 }
