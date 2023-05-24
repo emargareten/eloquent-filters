@@ -103,13 +103,14 @@ test('dynamic filter on modal', function () {
     ])->count())->toBe(2);
 });
 
-test('dynamic filter with value on modal', function () {
+test('dynamic filter with value and operator on modal', function () {
     Post::create(['views' => 10]);
     Post::create(['views' => 20]);
     Post::create(['views' => 30]);
 
     expect(Post::filter([
-        'property' => 'has-minimum-views',
+        'property' => 'has-views',
+        'operator' => '>=',
         'value' => 20,
     ])->count())->toBe(2);
 });
@@ -130,7 +131,8 @@ test('dynamic filter using callable with value', function () {
     Post::create(['views' => 30]);
 
     expect(Post::filter([
-        'property' => [new Post, 'filterHasMinimumViews'],
+        'property' => [new Post, 'filterHasViews'],
+        'operator' => '>=',
         'value' => 20,
     ])->count())->toBe(2);
 });

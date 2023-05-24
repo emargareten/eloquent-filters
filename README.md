@@ -246,15 +246,15 @@ class Post extends Model
 }
 ```
 
-You can also define a dynamic filter that accepts a value:
+You can also define a dynamic filter that accepts an operator and a value:
 
 ``` php
 /**
  * Filter the query by posts that have at least the given amount of views.
  */
-public function filterHasMinimumViews(Builder $query, int $minimum): void
+public function filterHasViews(Builder $query, string $operator, int $count): void
 {
-    $query->where('views', '>=', $minimum);
+    $query->where('views', $operator, $count);
 }
 ```
 
@@ -272,6 +272,7 @@ Post::filter([
 Post::filter([
     [
         'property' => 'has-minimum-views',
+        'operator' => '>=',
         'value' => 20,
     ],
 ])->get();
@@ -291,6 +292,7 @@ Post::filter([
 Post::filter([
     [
         'property' => [MyClass::class, 'myMethod'],
+        'operator' => '>=',
         'value' => 20,
     ],
 ])->get();

@@ -35,8 +35,8 @@ class Post extends Model
         $query->where('views', '>=', 20);
     }
 
-    public function filterHasMinimumViews(Builder $query, int $minimum): void
+    public function filterHasViews(Builder $query, string $operator, int $count): void
     {
-        $query->where('views', '>=', $minimum);
+        $query->where('views', $operator, $count);
     }
 }

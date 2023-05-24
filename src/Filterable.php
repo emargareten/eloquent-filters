@@ -48,9 +48,11 @@ trait Filterable
         }
 
         $property = $filter['property'];
+        $operator = $filter['operator'] ?? 'equal';
+        $value = $filter['value'] ?? null;
 
         if (is_callable($property)) {
-            $property($query, $filter['value'] ?? null);
+            $property($query, $operator, $value);
 
             return;
         }
@@ -58,7 +60,7 @@ trait Filterable
         $customFilter = 'filter'.Str::studly($property);
 
         if (method_exists($this, $customFilter)) {
-            $this->{$customFilter}($query, $filter['value'] ?? null);
+            $this->{$customFilter}($query, $operator, $value);
 
             return;
         }
@@ -83,15 +85,13 @@ trait Filterable
             throw new FilterParameterException("Property $property is not defined in the filterTypes array in model ".($relationModel ?? $this)::class);
         }
 
-        $operator = $filter['operator'] ?? 'equal';
-
         $type = str_contains($operator, ':')
             ? Str::before($operator, ':')
             : $filterTypes[$property] ?? 'text';
 
         $closure = $this->getFilterClosure($type, Str::after($operator, ':'));
 
-        $closure($query, $property, $filter['value'] ?? null);
+        $closure($query, $property, $value);
     }
 
     protected function getFilterClosure(string $type, string $operator): Closure
