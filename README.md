@@ -278,26 +278,6 @@ Post::filter([
 ])->get();
 ```
 
-Instead of defining a method on your model, you can also pass a callable as the filter property value:
-
-``` php
-Post::filter([
-    [
-        'property' => [MyClass::class, 'myMethod'],
-    ],
-])->get();
-
-// using a value
-
-Post::filter([
-    [
-        'property' => [MyClass::class, 'myMethod'],
-        'operator' => '>=',
-        'value' => 20,
-    ],
-])->get();
-```
-
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information about what has changed recently.

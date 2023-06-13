@@ -51,12 +51,6 @@ trait Filterable
         $operator = $filter['operator'] ?? 'equal';
         $value = $filter['value'] ?? null;
 
-        if (is_callable($property)) {
-            $property($query, $operator, $value);
-
-            return;
-        }
-
         $customFilter = 'filter'.Str::studly($property);
 
         if (method_exists($this, $customFilter)) {
