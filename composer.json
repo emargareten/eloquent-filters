@@ -13,12 +13,13 @@
         "illuminate/support": "^9.0|^10.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.10",
-        "nunomaduro/collision": "^7.5",
-        "orchestra/testbench": "^8.5",
-        "pestphp/pest": "^2.5",
-        "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^10.1"
+        "laravel/pint": "^1.10.3",
+        "nunomaduro/collision": "^7.6",
+        "nunomaduro/larastan": "^2.6.3",
+        "orchestra/testbench": "^8.5.9",
+        "pestphp/pest": "^2.8.1",
+        "phpstan/phpstan": "^1.10.21",
+        "phpunit/phpunit": "^10.2.2"
     },
     "autoload": {
         "psr-4": {
