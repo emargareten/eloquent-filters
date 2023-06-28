@@ -41,7 +41,7 @@ trait Filterable
         }
     }
 
-    protected function applyFilter(Builder $query, mixed $filter, string $relation = null): void
+    public function applyFilter(Builder $query, mixed $filter, string $relation = null): void
     {
         if (! isset($filter['property'])) {
             throw new FilterParameterException('Filter property is not set');
@@ -51,10 +51,12 @@ trait Filterable
         $operator = $filter['operator'] ?? 'equal';
         $value = $filter['value'] ?? null;
 
+        $model = $relation ? $this->{$relation}()->getRelated() : $this;
+
         $customFilter = 'filter'.Str::studly($property);
 
-        if (method_exists($this, $customFilter)) {
-            $this->{$customFilter}($query, $operator, $value);
+        if (method_exists($model, $customFilter)) {
+            $model->{$customFilter}($query, $operator, $value);
 
             return;
         }
@@ -62,21 +64,20 @@ trait Filterable
         if (str_contains($property, '.')) {
             $query->whereRelation(
                 Str::before($property, '.'),
-                fn (Builder $query) => $this->applyFilter($query, Arr::set($filter, 'property', Str::after($property, '.')), Str::before($property, '.'))
+                fn (Builder $query) => $model->applyFilter(
+                    $query,
+                    Arr::set($filter, 'property', Str::after($property, '.')),
+                    Str::before($property, '.'),
+                )
             );
 
             return;
         }
 
-        if ($relation) {
-            $relationModel = $this->{$relation}()->getRelated();
-            $filterTypes = $relationModel->filterTypes ?? [];
-        } else {
-            $filterTypes = $this->filterTypes ?? [];
-        }
+        $filterTypes = $model->filterTypes ?? [];
 
         if (! in_array($property, array_keys($filterTypes))) {
-            throw new FilterParameterException("Property $property is not defined in the filterTypes array in model ".($relationModel ?? $this)::class);
+            throw new FilterParameterException("Property $property is not defined in the filterTypes array in model ".$model::class);
         }
 
         $type = str_contains($operator, ':')

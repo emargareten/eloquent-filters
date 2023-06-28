@@ -114,3 +114,22 @@ test('dynamic filter with value and operator on modal', function () {
         'value' => 20,
     ])->count())->toBe(2);
 });
+
+test('dynamic filter on relation model', function () {
+    Post::create(['views' => 10])->comments()->create();
+    Post::create(['views' => 20])->comments()->create();
+
+    expect(Comment::filter([
+        'property' => 'post.has-twenty-views',
+    ])->count())->toBe(1);
+});
+
+test('dynamic filter on nested relation model', function () {
+    Post::create(['views' => 10])->comments()->create();
+    Post::create(['views' => 20])->comments()->create();
+
+    expect(Comment::filter([
+        'property' => 'post.comments.post.has-twenty-views',
+    ])->count())->toBe(1);
+});
+
