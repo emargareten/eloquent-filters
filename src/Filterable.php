@@ -84,6 +84,8 @@ trait Filterable
             ? Str::before($operator, ':')
             : $filterTypes[$property] ?? 'text';
 
+        $property = $model->getTable().'.'.$property;
+
         $closure = $this->getFilterClosure($type, Str::after($operator, ':'));
 
         $closure($query, $property, $value);
