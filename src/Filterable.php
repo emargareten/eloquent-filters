@@ -41,7 +41,7 @@ trait Filterable
         }
     }
 
-    public function applyFilter(Builder $query, mixed $filter, string $relation = null): void
+    public function applyFilter(Builder $query, mixed $filter, ?string $relation = null): void
     {
         if (! isset($filter['property'])) {
             throw new FilterParameterException('Filter property is not set');
