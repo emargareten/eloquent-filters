@@ -74,7 +74,7 @@ test('can use fqcn in filterTypes', function () {
     ])->count())->toBe(1);
 });
 
-test('can apply filters on relations', function () {
+test('can apply filters on relations using dot notation', function () {
     $post = Post::create(['content' => 'Lorem ipsum dolor sit amet.']);
     $post->comments()->create(['body' => 'Lorem ipsum dolor sit amet.']);
 
@@ -90,6 +90,50 @@ test('can apply filters on relations', function () {
             'property' => 'post.content',
             'operator' => 'contains',
             'value' => 'Lorem',
+        ])->count())
+        ->toBe(1);
+});
+
+test('can apply filters on relations using array', function () {
+    $post = Post::create(['content' => 'Lorem ipsum dolor sit amet.']);
+    $post->comments()->create([
+        'body' => 'Lorem ipsum dolor sit amet.',
+        'created_at' => '2020-01-01 00:00:00',
+    ]);
+
+    $post2 = Post::create(['content' => 'Lorem ipsum dolor sit amet.']);
+    $post2->comments()->create([
+        'body' => 'Lorem ipsum dolor sit amet.',
+        'created_at' => '2021-01-01 00:00:00',
+    ]);
+
+    $post3 = Post::create(['content' => 'Ipsum dolor sit amet.']);
+    $post3->comments()->create([
+        'body' => 'Ipsum dolor sit amet.',
+    ]);
+
+    expect(Post::filter([
+        'property' => 'comments',
+        'operator' => [
+            'property' => 'body',
+            'operator' => 'contains',
+            'value' => 'Lorem',
+        ],
+    ])->count())->toBe(2)
+        ->and(Post::filter([
+            'property' => 'comments',
+            'operator' => [
+                [
+                    'property' => 'body',
+                    'operator' => 'contains',
+                    'value' => 'Lorem',
+                ],
+                [
+                    'property' => 'created_at',
+                    'operator' => 'date:greater-than-or-equal',
+                    'value' => '2021-01-01',
+                ],
+            ],
         ])->count())
         ->toBe(1);
 });

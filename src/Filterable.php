@@ -62,6 +62,7 @@ trait Filterable
         }
 
         if (str_contains($property, '.')) {
+            // Filter by relation
             $query->whereRelation(
                 Str::before($property, '.'),
                 fn (Builder $query) => $model->applyFilter(
@@ -70,6 +71,13 @@ trait Filterable
                     Str::before($property, '.'),
                 )
             );
+
+            return;
+        }
+
+        if (is_array($operator)) {
+            // Filter by relation - multiple filters in single relation model
+            $query->whereHas($property, fn (Builder $query) => $query->filter($operator)); // @phpstan-ignore-line
 
             return;
         }

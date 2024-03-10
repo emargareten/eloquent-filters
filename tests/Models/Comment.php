@@ -17,6 +17,7 @@ class Comment extends Model
      */
     public array $filterTypes = [
         'body' => 'string',
+        'created_at' => 'date',
     ];
 
     public function post(): BelongsTo
