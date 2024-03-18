@@ -50,6 +50,7 @@ trait Filterable
         $property = $filter['property'];
         $operator = $filter['operator'] ?? 'equal';
         $value = $filter['value'] ?? null;
+        $negate = filter_var($filter['negate'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
         $model = $relation ? $this->{$relation}()->getRelated() : $this;
 
@@ -77,6 +78,18 @@ trait Filterable
 
         if (is_array($operator)) {
             // Filter by relation - multiple filters in single relation model
+
+            // Filter relationship absence
+            if ($negate) {
+                $query->whereDoesntHave(
+                    Str::after($property, '!'),
+                    fn (Builder $query) => $query->filter($operator) // @phpstan-ignore-line
+                );
+
+                return;
+            }
+
+            // Filter relationship existence
             $query->whereHas($property, fn (Builder $query) => $query->filter($operator)); // @phpstan-ignore-line
 
             return;

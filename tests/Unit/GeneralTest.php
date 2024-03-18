@@ -138,7 +138,53 @@ test('can apply filters on relations using array', function () {
         ->toBe(1);
 });
 
-test('dynamic filter on modal', function () {
+test('can apply negative filters on relations using array', function () {
+    $post = Post::create(['content' => 'Lorem ipsum dolor sit amet.']);
+    $post->comments()->create([
+        'body' => 'Lorem ipsum dolor sit amet.',
+        'created_at' => '2020-01-01 00:00:00',
+    ]);
+
+    $post2 = Post::create(['content' => 'Lorem ipsum dolor sit amet.']);
+    $post2->comments()->create([
+        'body' => 'Lorem ipsum dolor sit amet.',
+        'created_at' => '2021-01-01 00:00:00',
+    ]);
+
+    $post3 = Post::create(['content' => 'Ipsum dolor sit amet.']);
+    $post3->comments()->create([
+        'body' => 'Ipsum dolor sit amet.',
+    ]);
+
+    expect(Post::filter([
+        'property' => 'comments',
+        'operator' => [
+            'property' => 'body',
+            'operator' => 'contains',
+            'value' => 'Lorem',
+        ],
+        'negate' => true,
+    ])->count())->toBe(1)
+        ->and(Post::filter([
+            'property' => 'comments',
+            'operator' => [
+                [
+                    'property' => 'body',
+                    'operator' => 'contains',
+                    'value' => 'Lorem',
+                ],
+                [
+                    'property' => 'created_at',
+                    'operator' => 'date:greater-than-or-equal',
+                    'value' => '2021-01-01',
+                ],
+            ],
+            'negate' => true,
+        ])->count())
+        ->toBe(2);
+});
+
+test('dynamic filter on model', function () {
     Post::create(['views' => 10]);
     Post::create(['views' => 20]);
     Post::create(['views' => 30]);
@@ -148,7 +194,7 @@ test('dynamic filter on modal', function () {
     ])->count())->toBe(2);
 });
 
-test('dynamic filter with value and operator on modal', function () {
+test('dynamic filter with value and operator on model', function () {
     Post::create(['views' => 10]);
     Post::create(['views' => 20]);
     Post::create(['views' => 30]);
