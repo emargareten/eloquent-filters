@@ -24,7 +24,10 @@ class TimeFilter
 
     public function notEqual(Builder $query, string $property, string|DateTimeInterface $value): void
     {
-        $query->whereTime($property, '!=', $value);
+        $query->where(fn (Builder $query) => $query
+            ->whereTime($property, '!=', $value)
+            ->orWhereNull($property)
+        );
     }
 
     public function greaterThan(Builder $query, string $property, string|DateTimeInterface $value): void

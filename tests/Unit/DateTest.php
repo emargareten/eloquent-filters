@@ -29,6 +29,18 @@ test('date:not-equal', function () {
     ])->count())->toBe(3);
 });
 
+test('date:not-equal includes null values', function () {
+    Post::create(['published_at' => null]);
+
+    expect(Post::filter([
+        [
+            'property' => 'published_at',
+            'operator' => 'not-equal',
+            'value' => now()->subDays(1),
+        ],
+    ])->count())->toBe(4);
+});
+
 test('date:greater-than', function () {
     expect(Post::filter([
         [

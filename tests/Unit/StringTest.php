@@ -70,6 +70,18 @@ test('string:not-equal', function () {
     ])->count())->toBe(2);
 });
 
+test('string:not-equal includes null values', function () {
+    Post::create(['content' => null]);
+
+    expect(Post::filter([
+        [
+            'property' => 'content',
+            'operator' => 'not-equal',
+            'value' => 'Lorem ipsum dolor sit amet.',
+        ],
+    ])->count())->toBe(3);
+});
+
 test('string:contains', function () {
     expect(Post::filter([
         [

@@ -23,7 +23,10 @@ class NumberFilter
 
     public function notEqual(Builder $query, string $property, string|int|float $value): void
     {
-        $query->where($property, '!=', $value);
+        $query->where(fn (Builder $query) => $query
+            ->where($property, '!=', $value)
+            ->orWhereNull($property)
+        );
     }
 
     public function greaterThan(Builder $query, string $property, string|int|float $value): void

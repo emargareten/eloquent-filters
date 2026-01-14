@@ -29,6 +29,18 @@ test('time:not-equal', function () {
     ])->count())->toBe(3);
 });
 
+test('time:not-equal includes null values', function () {
+    Post::create(['reading_time' => null]);
+
+    expect(Post::filter([
+        [
+            'property' => 'reading_time',
+            'operator' => 'not-equal',
+            'value' => '01:00:00',
+        ],
+    ])->count())->toBe(4);
+});
+
 test('time:greater-than', function () {
     expect(Post::filter([
         [

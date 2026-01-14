@@ -23,7 +23,10 @@ class StringFilter
 
     public function notEqual(Builder $query, string $property, string $value): void
     {
-        $query->where($property, '!=', $value);
+        $query->where(fn (Builder $query) => $query
+            ->where($property, '!=', $value)
+            ->orWhereNull($property)
+        );
     }
 
     public function contains(Builder $query, string $property, string $value): void
