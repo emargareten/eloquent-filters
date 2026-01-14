@@ -7,5 +7,5 @@ parameters:
         - src
         - tests
 
-    checkGenericClassInNonGenericObjectType: false
-
+    ignoreErrors:
+        - identifier: missingType.generics
