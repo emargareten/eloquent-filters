@@ -3,6 +3,7 @@
 namespace Emargareten\EloquentFilters\Tests\Models;
 
 use Emargareten\EloquentFilters\Filterable;
+use Emargareten\EloquentFilters\Filters\DateFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,7 +23,7 @@ class Post extends Model
         'published_at' => 'date',
         'reading_time' => 'time',
         'views' => 'number',
-        'created_at' => \Emargareten\EloquentFilters\Filters\DateFilter::class,
+        'created_at' => DateFilter::class,
     ];
 
     public function comments(): HasMany
