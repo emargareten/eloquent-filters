@@ -42,7 +42,6 @@ test('missing operator falls back to string:equal', function () {
     ])->count())->toBe(1);
 });
 
-/** @phpstan-ignore-next-line  */
 test('missing parameters exception', function () {
     Post::create(['content' => 'Lorem ipsum dolor sit amet.']);
 
